@@ -38,5 +38,6 @@ def consume_kafka(
     logging.info("Ready to consume messages")
     for message in consumer:
         val_utf8 = message.value.decode("utf-8").replace("NaN", "null")
+        key = message.key.decode("utf-8")
         data = json.loads(val_utf8)
-        message_processing_func(data)
+        message_processing_func(key, data)
