@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 from kafka import KafkaProducer
@@ -29,8 +30,11 @@ def produce(
     document: dict = None,
     meta: dict = None,
 ) -> None:
-    producer = KafkaProducerSingleton.get_instance(kafka_uri)
-    key = key_id.encode("utf-8")
-    value = {"service": service, "value": document, "meta": meta}
-    producer.send(topic=topic, value=value, key=key)
-    producer.flush()
+    if kafka_uri:
+        producer = KafkaProducerSingleton.get_instance(kafka_uri)
+        key = key_id.encode("utf-8")
+        value = {"service": service, "value": document, "meta": meta}
+        producer.send(topic=topic, value=value, key=key)
+        producer.flush()
+    else:
+        logging.warning("No kafka_uri provided")
