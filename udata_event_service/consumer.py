@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Callable, List, Optional, Union
+from typing import Any, Callable, List, Optional, Union
 
 from kafka import KafkaConsumer
 
@@ -30,7 +30,8 @@ def consume_kafka(
     kafka_uri: str,
     group_id: Optional[str],
     topics: Union[str, List[str]],
-    message_processing_func: Callable[[dict], None],
+    message_processing_func: Callable[[str, dict, Any], None],
+    **kwargs: Any,
 ) -> None:
     consumer = create_kafka_consumer(kafka_uri, group_id, topics)
     logging.info("Ready to consume messages")
@@ -38,4 +39,4 @@ def consume_kafka(
         val_utf8 = message.value.decode("utf-8").replace("NaN", "null")
         key = message.key.decode("utf-8")
         data = json.loads(val_utf8)
-        message_processing_func(key, data)
+        message_processing_func(key, data, **kwargs)
