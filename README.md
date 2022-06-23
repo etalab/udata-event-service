@@ -1,1 +1,1 @@
-# udata-event-core
+# udata-event-service
