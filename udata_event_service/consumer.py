@@ -34,7 +34,7 @@ def consume_kafka(
     **kwargs: Any,
 ) -> None:
     consumer = create_kafka_consumer(kafka_uri, group_id, topics)
-    logging.info("Ready to consume messages")
+    logging.info(f"Ready to consume messages on the following topics: {topics}")
     for message in consumer:
         val_utf8 = message.value.decode("utf-8").replace("NaN", "null")
         key = message.key.decode("utf-8")
