@@ -31,10 +31,16 @@ def produce(
     meta: dict = None,
 ) -> None:
     if kafka_uri:
+        print("---start---")
         producer = KafkaProducerSingleton.get_instance(kafka_uri)
+        print("---1---")
         key = key_id.encode("utf-8")
+        print("---2---")
         value = {"service": service, "value": document, "meta": meta}
+        print("---3---")
         producer.send(topic=topic, value=value, key=key)
+        print("---4---")
         producer.flush()
+        print("---stop---")
     else:
         logging.warning("No kafka_uri provided")
