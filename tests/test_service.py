@@ -4,7 +4,7 @@ import uuid
 from udata_event_service.consumer import create_kafka_consumer, consume_kafka
 from udata_event_service.producer import produce
 
-KAFKA_URI = "localhost:29092"
+KAFKA_URI = "localhost:9092"
 
 
 def test_service():
