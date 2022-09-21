@@ -3,6 +3,7 @@ import logging
 import os
 
 from kafka import KafkaProducer
+from kafka.errors import KafkaError
 
 
 class KafkaProducerSingleton:
@@ -38,9 +39,11 @@ def produce(
         print("---2---")
         value = {"service": service, "value": document, "meta": meta}
         print("---3---")
-        producer.send(topic=topic, value=value, key=key)
+        r = producer.send(topic=topic, value=value, key=key)
         print("---4---")
         producer.flush()
         print("---stop---")
+        if not r.succeeded():
+            raise KafkaError("Message couldn't be produced")
     else:
         logging.warning("No kafka_uri provided")
